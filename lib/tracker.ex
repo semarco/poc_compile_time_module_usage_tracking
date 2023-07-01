@@ -16,7 +16,13 @@ defmodule Tracker do
   end
 
   def modules do
-    {:consolidated, modules} = Trackable.__protocol__(:impls)
-    modules
+    if Protocol.consolidated?(Trackable) do
+      {:consolidated, modules} = Trackable.__protocol__(:impls)
+      modules
+    else
+      [path | _] = :code.get_path()
+      Protocol.extract_impls(Trackable, [path])
+    end
+    |> Enum.sort()
   end
 end
