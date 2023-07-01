@@ -7,8 +7,7 @@ defmodule CompileTimeCache.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      compilers: Mix.compilers() ++ [:tracker_cache]
+      deps: deps()
     ]
   end
 
@@ -21,6 +20,6 @@ defmodule CompileTimeCache.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [{:fastglobal, "~> 1.0", runtime: false}]
+    []
   end
 end
