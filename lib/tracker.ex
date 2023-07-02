@@ -15,14 +15,16 @@ defmodule Tracker do
     end
   end
 
+  # ignore dialyzer assumes Trackable is always consolidated
+  @dialyzer {:nowarn_function, modules: 0}
+  @spec modules :: [module]
   def modules do
-    if Protocol.consolidated?(Trackable) do
-      {:consolidated, modules} = Trackable.__protocol__(:impls)
-      modules
-    else
-      [path | _] = :code.get_path()
-      Protocol.extract_impls(Trackable, [path])
+    case Trackable.__protocol__(:impls) do
+      {:consolidated, modules} ->
+        modules
+
+      :not_consolidated ->
+        Protocol.extract_impls(Trackable, :code.get_path())
     end
-    |> Enum.sort()
   end
 end
